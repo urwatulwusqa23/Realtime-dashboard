@@ -1,0 +1,10 @@
+<div class="metric-card" [class.spike]="isSpike">
+  <div class="label">{{ displayName }}</div>
+  <div class="value">{{ formattedValue }}</div>
+  <div class="change" [class.positive]="isPositive" [class.negative]="!isPositive">
+    <span class="arrow">{{ isPositive ? '▲' : '▼' }}</span>
+    {{ absChange }}%
+    <span class="spike-badge" *ngIf="isSpike">SPIKE</span>
+  </div>
+  <div class="category">{{ metric.category }}</div>
+</div>

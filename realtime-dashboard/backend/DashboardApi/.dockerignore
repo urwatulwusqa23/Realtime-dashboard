@@ -1,0 +1,17 @@
+bin/
+obj/
+*.user
+*.suo
+*.cache
+.vs/
+
+# NuGet package folders
+*.nupkg
+packages/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,23 @@
+# Secrets
+.env
+*.env.prod
+appsettings.Production.json
+
+# .NET
+bin/
+obj/
+*.user
+.vs/
+*.suo
+
+# Angular
+node_modules/
+dist/
+.angular/
+
+# Docker
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,68 @@
+<div class="sidebar">
+
+  <div class="sidebar-header">
+    <span class="title">
+      <span class="dot"></span>
+      AI Insights
+    </span>
+    <button class="clear-btn" (click)="clear()">Clear</button>
+  </div>
+
+  <!-- Suggestions shown when chat is empty -->
+  <div class="suggestions" *ngIf="(messages$ | async)?.length === 0">
+    <p class="hint">Ask about your live data:</p>
+    <button
+      *ngFor="let s of suggestions"
+      class="suggestion-btn"
+      (click)="useSuggestion(s)">
+      {{ s }}
+    </button>
+  </div>
+
+  <!-- Message thread -->
+  <div class="messages">
+    <div
+      *ngFor="let msg of messages$ | async"
+      class="message"
+      [class.user]="msg.role === 'user'"
+      [class.assistant]="msg.role === 'assistant'">
+
+      <div class="bubble">
+        <span *ngIf="msg.role === 'user'">{{ msg.content }}</span>
+        <span
+          *ngIf="msg.role === 'assistant'"
+          class="ai-markdown"
+          [innerHTML]="parseMarkdown(msg.content)">
+        </span>
+      </div>
+
+      <div class="time">{{ msg.createdAt | date:'HH:mm:ss' }}</div>
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="message assistant" *ngIf="loading$ | async">
+      <div class="bubble loading">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div #messagesEnd></div>
+  </div>
+
+  <!-- Input area -->
+  <div class="input-area">
+    <textarea
+      [(ngModel)]="question"
+      (keydown)="onKeydown($event)"
+      placeholder="Ask anything about your data… (Enter to send)"
+      rows="2">
+    </textarea>
+    <button
+      class="send-btn"
+      [disabled]="!question.trim() || (loading$ | async)"
+      (click)="send()">
+      Send
+    </button>
+  </div>
+
+</div>

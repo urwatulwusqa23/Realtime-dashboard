@@ -1,0 +1,115 @@
+<div class="dashboard-layout">
+
+  <!-- ── Main content panel ──────────────────────────── -->
+  <div class="main-panel">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">📊</span>
+        <span class="brand-name">LiveDash</span>
+        <span class="version">v1.0</span>
+      </div>
+
+      <div class="status-row">
+        <div class="connection-status">
+          <span class="dot"
+            [class.online]="connected$ | async"
+            [class.offline]="!(connected$ | async)">
+          </span>
+          <span class="status-text">
+            {{ (connected$ | async) ? 'Live' : 'Connecting…' }}
+          </span>
+        </div>
+
+        <div class="divider"></div>
+
+        <span class="update-label">Updates every 3s</span>
+
+        <button class="pause-btn" (click)="togglePause()">
+          {{ (paused$ | async) ? '▶ Resume' : '⏸ Pause' }}
+        </button>
+      </div>
+    </header>
+
+    <!-- Metric cards -->
+    <section class="cards-grid">
+      <app-metric-card [metric]="getMetric('revenue')"></app-metric-card>
+      <app-metric-card [metric]="getMetric('orders')"></app-metric-card>
+      <app-metric-card [metric]="getMetric('users')"></app-metric-card>
+      <app-metric-card [metric]="getMetric('conversion')"></app-metric-card>
+    </section>
+
+    <!-- Revenue line chart (full width) -->
+    <section class="chart-section">
+      <div class="chart-header">
+        <h3>Revenue</h3>
+        <span class="chart-tag live">LIVE</span>
+      </div>
+      <app-line-chart
+        [data]="revenueHistory"
+        label="Revenue ($)"
+        color="#6366f1">
+      </app-line-chart>
+    </section>
+
+    <!-- Orders + Category breakdown -->
+    <section class="charts-row two-col">
+      <div>
+        <div class="chart-header">
+          <h3>Orders</h3>
+          <span class="chart-tag live">LIVE</span>
+        </div>
+        <app-line-chart
+          [data]="ordersHistory"
+          label="Orders"
+          color="#34d399">
+        </app-line-chart>
+      </div>
+      <div>
+        <div class="chart-header">
+          <h3>Revenue by Region</h3>
+          <span class="chart-tag">5 MIN</span>
+        </div>
+        <app-bar-chart
+          [categories]="categoryData"
+          label="Revenue ($)">
+        </app-bar-chart>
+      </div>
+    </section>
+
+    <!-- Users + Conversion -->
+    <section class="charts-row two-col">
+      <div>
+        <div class="chart-header">
+          <h3>Active Users</h3>
+          <span class="chart-tag live">LIVE</span>
+        </div>
+        <app-line-chart
+          [data]="usersHistory"
+          label="Users"
+          color="#f59e0b">
+        </app-line-chart>
+      </div>
+      <div>
+        <div class="chart-header">
+          <h3>Conversion Rate %</h3>
+          <span class="chart-tag live">LIVE</span>
+        </div>
+        <app-line-chart
+          [data]="conversionHistory"
+          label="Conversion %"
+          color="#f87171">
+        </app-line-chart>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ── AI Chat sidebar ──────────────────────────────── -->
+  <aside class="sidebar-panel">
+    <app-chat-sidebar [currentMetrics]="latestMetrics">
+    </app-chat-sidebar>
+  </aside>
+
+</div>
